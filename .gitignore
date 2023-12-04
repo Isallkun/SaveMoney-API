@@ -1,0 +1,4 @@
+# Ignore Firebase key files
+key.json
+node_modules
+.env

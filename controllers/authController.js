@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const { db } = require("../config/admin");
 const UserModel = require("../models/userModel");
 
@@ -6,12 +5,11 @@ const AuthController = {
   register: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10); // Enkripsi password sebelum registrasi
       const userModel = new UserModel();
-      const response = await userModel.register(email, hashedPassword); // Gunakan password yang telah dienkripsi
+      const response = await userModel.register(email, password); // Gunakan password langsung tanpa enkripsi
 
       // Jika registrasi berhasil, tambahkan user ke koleksi 'users' di Firestore
-      await db.collection("users").add({ email, password: hashedPassword }); // Tambahkan email dan password yang dienkripsi
+      await db.collection("users").add({ email, password }); // Tambahkan email dan password tanpa enkripsi
 
       res.status(201).json({ message: "User registered successfully", uid: response.uid });
     } catch (error) {
@@ -23,11 +21,22 @@ const AuthController = {
     try {
       const { email, password } = req.body;
       const userModel = new UserModel();
-      const uid = await userModel.verifyUser(email, password); // Verifikasi password sebelum login
 
-      if (uid) {
+      // Ambil dokumen pengguna berdasarkan email dari Firestore
+      const userDoc = await db.collection("users").where("email", "==", email).get();
+      if (userDoc.empty) {
+        throw new Error("User not found");
+      }
+
+      let user;
+      userDoc.forEach((doc) => {
+        user = doc.data();
+      });
+
+      // Bandingkan password yang diberikan dengan password yang ada di Firestore
+      if (user.password === password) {
         // Jika verifikasi berhasil, kirimkan respons login sukses
-        res.status(200).json({ message: "Login successful", uid });
+        res.status(200).json({ message: "Login successful", uid: user.uid });
       } else {
         res.status(401).json({ message: "Login failed", error: "Invalid credentials" });
       }

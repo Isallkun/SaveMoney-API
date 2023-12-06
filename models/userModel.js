@@ -1,46 +1,39 @@
+// UserModel.js
+
 const { admin } = require("../config/admin");
-const jwt = require("jsonwebtoken");
 
 class UserModel {
   constructor() {
     this.auth = admin.auth();
   }
 
-  async verifyUser(email, password) {
+  async signInCustomToken(uid) {
     try {
-      const userRecord = await this.auth.getUserByEmail(email);
-
-      // Dapatkan password dari userRecord (jika tersedia)
-      const storedPassword = userRecord.password;
-
-      // Bandingkan password yang dimasukkan dengan password yang tersimpan
-      const isPasswordValid = password === storedPassword;
-
-      if (isPasswordValid) {
-        // Jika password cocok, buat token JWT
-        const token = jwt.sign({ uid: userRecord.uid }, "your_secret_key");
-        return { token };
-      } else {
-        throw new Error("Invalid credentials");
-      }
+      const customToken = await this.auth.createCustomToken(uid);
+      return { customToken };
     } catch (error) {
-      console.error("Error during verification:", error);
+      throw new Error("Failed to create custom token");
+    }
+  }
+
+  async register(email, password, name) {
+    try {
+      const userRecord = await this.auth.createUser({
+        email: email,
+        password: password,
+        displayName: name,
+      });
+      return { uid: userRecord.uid };
+    } catch (error) {
       throw error;
     }
   }
 
-  async register(email, password) {
+  async getUser(uid) {
     try {
-      // Simpan password tanpa enkripsi
-      const userRecord = await this.auth.createUser({
-        email: email,
-        password: password,
-        // ... other user information
-      });
-
-      return { uid: userRecord.uid };
+      const userRecord = await this.auth.getUser(uid);
+      return userRecord;
     } catch (error) {
-      console.error("Error during registration:", error);
       throw error;
     }
   }

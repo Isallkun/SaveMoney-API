@@ -1,15 +1,15 @@
 const { db } = require("../config/admin");
 const UserModel = require("../models/userModel");
+const { admin } = require("../config/admin"); // Perbaiki inisialisasi Firebase
 
 const AuthController = {
   register: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { email, password, name } = req.body;
       const userModel = new UserModel();
-      const response = await userModel.register(email, password); // Gunakan password langsung tanpa enkripsi
+      const response = await userModel.register(email, password, name);
 
-      // Jika registrasi berhasil, tambahkan user ke koleksi 'users' di Firestore
-      await db.collection("users").add({ email, password }); // Tambahkan email dan password tanpa enkripsi
+      await db.collection("users").add({ email, password, name });
 
       res.status(201).json({ message: "User registered successfully", uid: response.uid });
     } catch (error) {
@@ -20,9 +20,8 @@ const AuthController = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const userModel = new UserModel();
 
-      // Ambil dokumen pengguna berdasarkan email dari Firestore
+      // Dapatkan data pengguna berdasarkan email dari Firestore
       const userDoc = await db.collection("users").where("email", "==", email).get();
       if (userDoc.empty) {
         throw new Error("User not found");
@@ -33,10 +32,21 @@ const AuthController = {
         user = doc.data();
       });
 
-      // Bandingkan password yang diberikan dengan password yang ada di Firestore
+      // Inisialisasi auth dari admin
+      const auth = admin.auth();
+
+      // Periksa apakah password cocok (disarankan menggunakan bcrypt)
       if (user.password === password) {
-        // Jika verifikasi berhasil, kirimkan respons login sukses
-        res.status(200).json({ message: "Login successful", uid: user.uid });
+        const token = await auth.createCustomToken(email); // Menggunakan createCustomToken dari auth
+
+        res.status(200).json({
+          message: "Login successful",
+          token: token,
+          user: {
+            email: user.email,
+            name: user.name,
+          },
+        });
       } else {
         res.status(401).json({ message: "Login failed", error: "Invalid credentials" });
       }

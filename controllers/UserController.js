@@ -1,20 +1,25 @@
 // UserController.js
+const { db, auth } = require("../config/admin");
 const UserModel = require("../models/userModel");
+const admin = require("../config/admin");
 
 const UserController = {
   getUser: async (req, res) => {
     try {
-      const { uid } = req.user; // Ambil UID dari token yang terverifikasi
-      const userModel = new UserModel();
-      const userData = await userModel.getUser(uid);
+      const token = req.headers.authorization; // Dapatkan token dari headers
 
-      if (userData) {
-        res.status(200).json({ message: "User data retrieved successfully", userData });
-      } else {
-        res.status(404).json({ message: "User not found" });
+      if (!token) {
+        return res.status(403).json({ message: "Token not provided" });
       }
+
+      const decodedToken = await auth.verifyIdToken(token); // Verifikasi token
+
+      // Dapatkan data pengguna berdasarkan UID dari token yang terdekripsi
+      const user = await auth.getUser(decodedToken.uid);
+
+      res.status(200).json({ message: "User data retrieved successfully", user });
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch user data", error: error.message });
+      res.status(401).json({ message: "Failed to retrieve user data", error: error.message });
     }
   },
 };

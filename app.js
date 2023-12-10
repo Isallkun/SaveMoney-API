@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 app.use("/auth", authRoutes);
 app.use("/auth/protected", verifyToken, protectedRoute); // Gunakan middleware pada rute yang ingin diproteksi
-app.use("/user", verifyToken, userRoutes); // Juga gunakan middleware pada rute ini
+app.use("/api/user", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("This is my demo project");

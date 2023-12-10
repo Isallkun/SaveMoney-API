@@ -1,19 +1,22 @@
 // verifyToken.js
-const { admin } = require("../config/admin");
+const { auth } = require("../config/admin"); // Ubah ini untuk mengambil objek auth dari admin.js
 
 const verifyToken = async (req, res, next) => {
-  const token = req.headers.authorization;
-  console.log(token);
+  const idToken = req.headers.authorization; // Get token from headers
+
+  if (!idToken) {
+    return res.status(403).json({ message: "Token not provided" });
+  }
 
   try {
-    console.log(admin.auth().currentUser.getToken());
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken;
+    const decodedToken = await auth.verifyIdToken(idToken); // Verify token
+
+    // If needed, access the decoded claims from the token
     console.log(decodedToken);
-    next();
+
+    next(); // Continue if token is valid
   } catch (error) {
-    console.error("Error in token verification:", error);
-    res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ message: "Invalid token", error: error.message });
   }
 };
 

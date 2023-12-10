@@ -1,6 +1,6 @@
 // UserModel.js
 
-const { admin } = require("../config/admin");
+const { admin } = require("../config/firebase");
 
 class UserModel {
   constructor() {

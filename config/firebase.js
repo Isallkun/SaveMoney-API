@@ -1,7 +1,9 @@
-// firebaseConfig.js
+// firebase.js
 
-const firebase = require("firebase/app");
-require("firebase/auth");
+const admin = require("firebase-admin");
+const serviceAccount = require("../key.json");
+const firebase = require("firebase/compat/app");
+require("firebase/compat/auth");
 require("dotenv").config();
 
 const firebaseConfig = {
@@ -14,7 +16,14 @@ const firebaseConfig = {
   measurementId: process.env.MEASUREMENT_ID,
 };
 
-// Inisialisasi Firebase app
+// Initialize Firebase app
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-module.exports = firebaseApp; // Export Firebase app
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const db = admin.firestore();
+const auth = admin.auth();
+
+module.exports = { admin, db, auth, firebaseApp, firebase };

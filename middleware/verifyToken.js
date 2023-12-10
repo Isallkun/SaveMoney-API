@@ -1,22 +1,20 @@
-// verifyToken.js
-const { auth } = require("../config/admin"); // Ubah ini untuk mengambil objek auth dari admin.js
+const { auth } = require("../config/firebase");
 
 const verifyToken = async (req, res, next) => {
-  const idToken = req.headers.authorization; // Get token from headers
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-  if (!idToken) {
+  if (!token) {
     return res.status(403).json({ message: "Token not provided" });
   }
 
   try {
-    const decodedToken = await auth.verifyIdToken(idToken); // Verify token
-
-    // If needed, access the decoded claims from the token
-    console.log(decodedToken);
-
-    next(); // Continue if token is valid
+    const decodedToken = await auth.verifyIdToken(token);
+    req.user = decodedToken;
+    next();
   } catch (error) {
-    return res.status(401).json({ message: "Invalid token", error: error.message });
+    console.error("Error in token verification:", error);
+    res.status(401).json({ error: "Unauthorized" });
   }
 };
 

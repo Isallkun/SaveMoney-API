@@ -1,21 +1,17 @@
 // UserController.js
-const { db, auth } = require("../config/admin");
+const { db, auth } = require("../config/firebase");
 const UserModel = require("../models/userModel");
-const admin = require("../config/admin");
+const admin = require("../config/firebase");
 
 const UserController = {
   getUser: async (req, res) => {
     try {
-      const token = req.headers.authorization; // Dapatkan token dari headers
+      const token = req.headers.authorization;
+      const decodedToken = await auth.verifyIdToken(token);
 
-      if (!token) {
-        return res.status(403).json({ message: "Token not provided" });
-      }
-
-      const decodedToken = await auth.verifyIdToken(token); // Verifikasi token
-
-      // Dapatkan data pengguna berdasarkan UID dari token yang terdekripsi
-      const user = await auth.getUser(decodedToken.uid);
+      // Lakukan apa pun yang diperlukan dengan decodedToken
+      // Contoh: dapatkan informasi pengguna dari token
+      const user = decodedToken; // Ganti ini dengan informasi yang ingin kamu dapatkan dari decodedToken
 
       res.status(200).json({ message: "User data retrieved successfully", user });
     } catch (error) {

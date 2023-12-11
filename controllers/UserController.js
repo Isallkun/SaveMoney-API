@@ -53,6 +53,27 @@ const UserController = {
     }
   },
 
+  deleteUser: async (req, res) => {
+    try {
+      const userId = req.params.id; // Ambil ID pengguna dari parameter permintaan
+
+      const userDoc = await db.collection("users").doc(userId).get();
+
+      if (!userDoc.exists) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+
+      // Hapus dokumen pengguna dari Firestore berdasarkan ID
+      await db.collection("users").doc(userId).delete();
+
+      res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete user", error: error.message });
+      console.error(error);
+    }
+  },
+
   // getUser: async (req, res) => {
   //   try {
   //     const userId = req.params.id;

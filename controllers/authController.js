@@ -18,19 +18,18 @@ const AuthController = {
   //   }
   // },
   register: async (req, res) => {
-    const { email, password, username } = req.body;
+    const { email, password, name } = req.body;
     try {
       const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
 
       // Update profile display name
-      await user.updateProfile({ displayName: username });
+      await user.updateProfile({ displayName: name });
 
       // Save user data to Firestore
       const userData = {
         email: user.email,
-        username: user.displayName,
-        uid: user.uid,
+        name: user.displayName,
       };
 
       // Simpan data pengguna ke Firestore
@@ -54,7 +53,7 @@ const AuthController = {
       const user = userCredential.user;
       req.session.uid = user.uid;
 
-      const { uid, email: userEmail, displayName, stsTokenManager } = user;
+      // const { uid, email: userEmail, displayName, stsTokenManager } = user;
       // const accessToken = stsTokenManager?.accessToken;
       // console.log(accessToken);
       res.status(200).json({
@@ -71,6 +70,16 @@ const AuthController = {
       console.log(error);
       res.status(401).json({ message: "Login failed", error: error.message });
     }
+  },
+
+  logout: async (req, res) => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        req.session.destroy();
+        res.status(200).json({ message: "Logout success" });
+      });
   },
 
   // login: async (req, res) => {
@@ -147,19 +156,20 @@ const AuthController = {
   //     res.status(401).json({ message: "Login failed", error: error.message });
   //   }
   // },
+
+  // const login = async (req, res) => {
+  //   const { email, password } = req.body;
+  //   try {
+  //     // Authenticate the user using firebaseApp instead of auth
+  //     const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+  //     const user = userCredential.user;
+  //     req.session.uid = user.uid;
+  //     res.status(200).json({ message: "Login success", body: user });
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.status(401).json({ message: "Login failed", error: error.message });
+  //   }
+  // };
 };
 
-// const login = async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     // Authenticate the user using firebaseApp instead of auth
-//     const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
-//     const user = userCredential.user;
-//     req.session.uid = user.uid;
-//     res.status(200).json({ message: "Login success", body: user });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(401).json({ message: "Login failed", error: error.message });
-//   }
-// };
 module.exports = AuthController;

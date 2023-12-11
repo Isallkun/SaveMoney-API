@@ -1,6 +1,30 @@
 const { db, firebase, admin, usersRef } = require("../config/firebase");
 
 const UserController = {
+  getAllUser: async (req, res) => {
+    try {
+      const usersSnapshot = await db.collection("users").get();
+
+      if (usersSnapshot.empty) {
+        res.status(404).json({ message: "No users found" });
+        return;
+      }
+
+      const users = [];
+      usersSnapshot.forEach((doc) => {
+        users.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      res.status(200).json({ message: "Users data retrieved successfully", users });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to retrieve users data", error: error.message });
+      console.error(error);
+    }
+  },
+
   getUser: async (req, res) => {
     try {
       // Dapatkan UID pengguna dari sesi atau token
@@ -75,6 +99,36 @@ const UserController = {
   //     res.status(401).json({ message: "Failed to retrieve user data", error: errorMessage });
   //   }
   // },
+
+  updateUser: async (req, res) => {
+    try {
+      const uid = req.session.uid;
+      const { email, name } = req.body;
+      const user = await admin.auth().getUser(uid);
+
+      // Update informasi profil pengguna
+      await admin.auth().updateUser(uid, {
+        email,
+        displayName: name,
+      });
+
+      await db.collection("users").doc(uid).update({
+        email,
+        name: name,
+      });
+
+      res.status(200).json({
+        message: "User data updated successfully",
+        body: {
+          email: email,
+          name: name,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({ message: "Failed to update user data", error: error.message });
+      console.log(error);
+    }
+  },
 };
 
 module.exports = UserController;

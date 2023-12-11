@@ -3,7 +3,7 @@ const session = require("express-session");
 const authRoutes = require("./routes/authRoute");
 const protectedRoute = require("./routes/protectedRoute");
 const userRoutes = require("./routes/userRoute");
-const verifyToken = require("./middleware/verifyToken");
+// const verifyToken = require("./middleware/verifyToken");
 const isAuthenticated = require("./middleware/isAuthenticated");
 
 const app = express();
@@ -25,7 +25,7 @@ app.use("/auth/protected", isAuthenticated, protectedRoute);
 app.use("/api", isAuthenticated, userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("This is my demo project");
+  res.send("API IS ONLINE");
 });
 
 const PORT = process.env.PORT || 3000;

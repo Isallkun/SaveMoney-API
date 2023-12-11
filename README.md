@@ -1,8 +1,14 @@
-REST API FIREBASE SAVEMONEY [UNFINISHED]
+# REST API FIREBASE SAVEMONEY [UNFINISHED]
+
+## Available
 
 - Register (/auth/register) name, email, password
 - Login (/auth/login) email, password
-- Benerin isAuthenticated dimana user bisa login kemudian logout
-- Get User
-- Put User
+- Logout (/auth/logout)
+- Get All User Information (/api/user) must login
+- Get User (/api/user/me) must login
+- Put/Update User (/api/user/me) must login
+
+## Not Yet Available
+
 - Delete User

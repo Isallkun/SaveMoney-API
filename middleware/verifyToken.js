@@ -1,4 +1,4 @@
-const { auth } = require("../config/firebase");
+const { admin } = require("../config/firebase");
 
 const verifyToken = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -9,7 +9,7 @@ const verifyToken = async (req, res, next) => {
   }
 
   try {
-    const decodedToken = await auth.verifyIdToken(token);
+    const decodedToken = await admin.auth().verifyIdToken(token);
     req.user = decodedToken;
     next();
   } catch (error) {

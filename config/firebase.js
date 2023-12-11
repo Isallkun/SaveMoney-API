@@ -24,6 +24,7 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+const usersRef = db.collection("users");
 const auth = admin.auth();
 
-module.exports = { admin, db, auth, firebaseApp, firebase };
+module.exports = { admin, usersRef, db, auth, firebaseApp, firebase };

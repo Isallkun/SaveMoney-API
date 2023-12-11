@@ -58,7 +58,7 @@ const AuthController = {
       // const accessToken = stsTokenManager?.accessToken;
       // console.log(accessToken);
       res.status(200).json({
-        message: "Login successfull",
+        message: "Login successfully",
         body: user,
         // body: {
         //   uid,

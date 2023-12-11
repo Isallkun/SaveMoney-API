@@ -4,6 +4,7 @@ const authRoutes = require("./routes/authRoute");
 const protectedRoute = require("./routes/protectedRoute");
 const userRoutes = require("./routes/userRoute");
 const verifyToken = require("./middleware/verifyToken");
+const isAuthenticated = require("./middleware/isAuthenticated");
 
 const app = express();
 
@@ -20,8 +21,8 @@ app.use(
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-app.use("/auth/protected", verifyToken, protectedRoute);
-app.use("/api", userRoutes);
+app.use("/auth/protected", isAuthenticated, protectedRoute);
+app.use("/api", isAuthenticated, userRoutes);
 
 app.get("/", (req, res) => {
   res.send("This is my demo project");

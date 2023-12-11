@@ -21,7 +21,7 @@ const UserController = {
       res.status(200).json({ message: "Users data retrieved successfully", users });
     } catch (error) {
       res.status(500).json({ message: "Failed to retrieve users data", error: error.message });
-      console.error(error);
+      // console.error(error);
     }
   },
 
@@ -40,7 +40,7 @@ const UserController = {
 
       if (!userDoc.exists) {
         res.status(404).json({ message: "User not found" });
-        console.log(!userDoc.exists);
+        // console.log(!userDoc.exists);
         return;
       }
 
@@ -49,28 +49,7 @@ const UserController = {
       res.status(200).json({ message: "User data retrieved successfully", user: userData });
     } catch (error) {
       res.status(500).json({ message: "Failed to retrieve user data", error: error.message });
-      console.error(error);
-    }
-  },
-
-  deleteUser: async (req, res) => {
-    try {
-      const userId = req.params.id; // Ambil ID pengguna dari parameter permintaan
-
-      const userDoc = await db.collection("users").doc(userId).get();
-
-      if (!userDoc.exists) {
-        res.status(404).json({ message: "User not found" });
-        return;
-      }
-
-      // Hapus dokumen pengguna dari Firestore berdasarkan ID
-      await db.collection("users").doc(userId).delete();
-
-      res.status(200).json({ message: "User deleted successfully" });
-    } catch (error) {
-      res.status(500).json({ message: "Failed to delete user", error: error.message });
-      console.error(error);
+      // console.error(error);
     }
   },
 
@@ -147,7 +126,24 @@ const UserController = {
       });
     } catch (error) {
       res.status(400).json({ message: "Failed to update user data", error: error.message });
-      console.log(error);
+      // console.log(error);
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    try {
+      const uid = req.session.uid;
+
+      // Hapus pengguna dari Firebase Authentication
+      await admin.auth().deleteUser(uid);
+
+      // Hapus data pengguna dari Firestore
+      await db.collection("users").doc(uid).delete();
+
+      res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete user", error: error.message });
+      console.error(error);
     }
   },
 };

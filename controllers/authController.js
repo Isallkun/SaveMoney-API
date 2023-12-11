@@ -67,7 +67,7 @@ const AuthController = {
         // },
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       res.status(401).json({ message: "Login failed", error: error.message });
     }
   },

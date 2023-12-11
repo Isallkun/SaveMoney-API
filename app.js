@@ -1,9 +1,8 @@
 const express = require("express");
 const session = require("express-session");
 const authRoutes = require("./routes/authRoute");
-const protectedRoute = require("./routes/protectedRoute");
+// const protectedRoute = require("./routes/protectedRoute");
 const userRoutes = require("./routes/userRoute");
-// const verifyToken = require("./middleware/verifyToken");
 const isAuthenticated = require("./middleware/isAuthenticated");
 
 const app = express();
@@ -21,7 +20,7 @@ app.use(
 app.use(express.json());
 
 app.use("/auth", authRoutes);
-app.use("/auth/protected", isAuthenticated, protectedRoute);
+// app.use("/auth/protected", isAuthenticated, protectedRoute);
 app.use("/api", isAuthenticated, userRoutes);
 
 app.get("/", (req, res) => {

@@ -2,4 +2,4 @@
 key.json
 node_modules
 .env
-key_backup.json
+key.backup.json

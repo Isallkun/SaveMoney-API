@@ -3,7 +3,7 @@ name: Deploy Savemoney API to Cloud Run
   on:
     push:
         branches:
-            - api-prod
+            - main
 
   jobs:
     deploy:

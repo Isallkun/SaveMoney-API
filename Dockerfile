@@ -7,7 +7,8 @@ WORKDIR /app
 # Mengunduh file key.json dari Google Cloud Storage saat build image
 RUN apt-get update && apt-get install -y wget
 
-RUN wget -O key.json https://storage.cloud.google.com/savemoney-api-buckets/key.json
+RUN wget -O key.json https://storage.googleapis.com/savemoney-api-buckets/key.json
+
 
 # Salin dependensi package.json dan package-lock.json
 COPY package*.json ./

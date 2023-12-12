@@ -19,6 +19,7 @@ steps:
       - "--cpu=2"
       - "--memory=2048Mi"
       - "--allow-unauthenticated"
+      - "--set-secrets=API_KEY=API_KEY:latest,AUTH_DOMAIN=AUTH_DOMAIN:latest,PROJECT_ID=PROJECT_ID:latest,STORAGE_BUCKET=STORAGE_BUCKET:latest,MESSAGING_SENDER_ID=MESSAGING_SENDER_ID:latest,APP_ID=APP_ID:latest,MEASUREMENT_ID=MEASUREMENT_ID:latest"
 images:
   - "gcr.io/$PROJECT_ID/savemoney-api:$COMMIT_SHA"
 logsBucket: "gs://savemoney-api-buckets/logs"

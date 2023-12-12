@@ -21,14 +21,6 @@ COPY . .
 
 EXPOSE 3000
 
-ENV API_KEY=AIzaSyB1Mg6U8LF92nUX1tGx7eM7TqFtxyz_2vA
-ENV AUTH_DOMAIN=save-money-91d0a.firebaseapp.com
-ENV PROJECT_ID=save-money-91d0a
-ENV STORAGE_BUCKET=save-money-91d0a.appspot.com
-ENV MESSAGING_SENDER_ID=28506334403
-ENV APP_ID=1:28506334403:web:99ad266775a80640aa6e76
-ENV MEASUREMENT_ID=G-ETKFBV8K1N
-
 
 # Perintah untuk memulai aplikasi
 CMD [ "node", "app.js" ]

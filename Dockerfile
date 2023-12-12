@@ -13,5 +13,7 @@ RUN npm install --only=production
 # Salin sisa proyek ke dalam container
 COPY . .
 
+EXPOSE 3000
+
 # Perintah untuk memulai aplikasi
 CMD [ "node", "app.js" ]

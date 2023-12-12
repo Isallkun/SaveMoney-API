@@ -14,6 +14,18 @@
 
 ### Expense
 
+- Add Expense (/api/users/expense) must login
+- Get All Expense (/api/users/expense) must login
+- Get Expense By ID (/api/users/expense/:id) must login
+- Update Expense By ID (/api/users/expense/:id) must login
+- Delete Expense By ID (/api/users/expense/:id) must login
+
 ### Income
+
+- Add Income (/api/users/incomes) must login
+- Get All Income (/api/users/incomes) must login
+- Get Income By ID (/api/users/incomes/:id) must login
+- Update Income By ID (/api/users/incomes/:id) must login
+- Delete Income By ID (/api/users/incomes/:id) must login
 
 ## Not Yet Available

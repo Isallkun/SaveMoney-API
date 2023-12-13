@@ -13,7 +13,7 @@ This API provides endpoints to manage users, expenses, and incomes for the SaveM
 - **Endpoint:** `/auth/register`
 - **Method:** `POST`
 - **Description:** Register a new user with name, email, and password.
-- **Parameters:**
+- **Body:**
   ```json
   {
     "email": "isallkun@bangkit.academy",
@@ -27,7 +27,7 @@ This API provides endpoints to manage users, expenses, and incomes for the SaveM
 - **Endpoint:** `/auth/login`
 - **Method:** `POST`
 - **Description:** Authenticate user by email and password to obtain access token.
-- **Parameters:**
+- **Body:**
   ```json
   {
     "email": "isallkun@bangkit.academy",
@@ -58,7 +58,7 @@ This API provides endpoints to manage users, expenses, and incomes for the SaveM
 - **Endpoint:** `/api/users/me`
 - **Method:** `PUT`
 - **Description:** Update information for the authenticated user. (Authentication required)
-- **Parameters:**
+- **Body:**
   ```json
   {
     "email": "isallkun@bangkit.academy",
@@ -81,7 +81,7 @@ This API provides endpoints to manage users, expenses, and incomes for the SaveM
 - **Endpoint:** `/api/users/expense`
 - **Method:** `POST`
 - **Description:** Add a new expense for the authenticated user. (Authentication required)
-- **Parameters:**
+- **Body:**
   ```json
   {
     "amount": "2000",
@@ -107,7 +107,7 @@ This API provides endpoints to manage users, expenses, and incomes for the SaveM
 - **Endpoint:** `/api/users/expense/:id`
 - **Method:** `PUT`
 - **Description:** Update a specific expense by ID for the authenticated user. (Authentication required)
-- **Parameters:**
+- **Body:**
   ```json
   {
     "amount": "10000",
@@ -131,7 +131,7 @@ This API provides endpoints to manage users, expenses, and incomes for the SaveM
 - **Endpoint:** `/api/users/incomes`
 - **Method:** `POST`
 - **Description:** Add a new income for the authenticated user. (Authentication required)
-- **Parameters:**
+- **Body:**
   ```json
   {
     "amount": "2000",
@@ -157,7 +157,7 @@ This API provides endpoints to manage users, expenses, and incomes for the SaveM
 - **Endpoint:** `/api/users/incomes/:id`
 - **Method:** `PUT`
 - **Description:** Update a specific income by ID for the authenticated user. (Authentication required)
-- **Parameters:**
+- **Body:**
   ```json
   {
     "amount": "60000",

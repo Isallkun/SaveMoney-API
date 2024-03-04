@@ -1,6 +1,6 @@
 {
   "name": "savemoney-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "savemoney-api backend using nodejs and firebase",
   "main": "app.js",
   "scripts": {
@@ -16,5 +16,9 @@
     "express-session": "^1.17.3",
     "firebase": "^10.7.0",
     "firebase-admin": "^11.11.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Isallkun/SaveMoney-API.git"
   }
 }
